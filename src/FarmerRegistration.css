@@ -1,0 +1,77 @@
+
+
+.fr-container {
+  max-width: 1300px;
+  margin: 80px auto;
+  padding: 20px;
+  background: #f8f9fc;
+  border-radius: 12px;
+}
+
+.form-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #1a1a1a;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  gap: 22px;
+}
+
+
+.fr-card {
+  background: white;
+  padding: 16px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+
+.fr-card label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Inputs */
+.fr-card input,
+.fr-card select {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fafafa;
+  outline: none;
+  transition: 0.2s;
+}
+
+.fr-card input:focus,
+.fr-card select:focus {
+  border-color: #007bff;
+  background: white;
+}
+
+/* Submit button */
+.submit-btn {
+  margin-top: 35px;
+  width: 100%;
+  padding: 14px;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  background: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.submit-btn:hover {
+  background: #005fcc;
+}

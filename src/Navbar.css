@@ -1,0 +1,137 @@
+/* 🌙 Navbar - Dark Glass Version */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(20, 20, 20, 0.7);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  padding: 12px 40px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  font-family: "Poppins", sans-serif;
+  position: fixed;
+  top: 0;
+  width: 95%;
+  z-index: 1000;
+}
+
+.navbar-logo h2 {
+  font-weight: 700;
+  color: #00e5ff;
+  letter-spacing: 1px;
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.navbar-links a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.navbar-links a:hover {
+  color: #00e5ff;
+}
+
+.profile-icon {
+  cursor: pointer;
+  color: #fff;
+  transition: transform 0.2s ease, color 0.3s ease;
+}
+
+.profile-icon:hover {
+  transform: scale(1.15);
+  color: #00e5ff;
+}
+
+/* 🌙 Sidebar */
+.profile-sidebar {
+  position: fixed;
+  top: 0;
+  right: -350px;
+  width: 300px;
+  height: 100%;
+  background: rgba(30, 30, 30, 0.9);
+  backdrop-filter: blur(10px);
+  box-shadow: -3px 0 10px rgba(0,0,0,0.5);
+  transition: right 0.4s ease;
+  padding: 25px;
+  z-index: 1500;
+  color: #fff;
+}
+
+.profile-sidebar.open {
+  right: 0;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #fff;
+  cursor: pointer;
+  float: right;
+}
+
+.profile-content {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.profile-img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 3px solid #00e5ff;
+}
+
+.profile-content h3 {
+  margin-top: 10px;
+  color: #00e5ff;
+  font-weight: 600;
+}
+
+.role {
+  color: #bbb;
+  font-size: 0.9rem;
+}
+
+.profile-info {
+  margin: 20px 0;
+  color: #ddd;
+}
+
+.profile-info p {
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.profile-actions button {
+  background-color: #00e5ff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 25px;
+  margin: 5px 0;
+  width: 80%;
+  font-weight: 500;
+  cursor: pointer;
+  color: #111;
+  transition: all 0.3s ease;
+}
+
+.profile-actions button:hover {
+  background-color: #00bcd4;
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 229, 255, 0.4);
+}
+.login-btn{
+  
+}

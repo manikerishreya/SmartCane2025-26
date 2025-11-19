@@ -1,0 +1,66 @@
+/* Container */
+.fertilizer-container {
+  max-width: 450px;
+
+  margin: 300px auto;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Heading */
+.fertilizer-heading {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 25px;
+  color: #1d321e;
+  font-weight: 600;
+}
+
+/* Form layout */
+.fertilizer-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Labels */
+.fertilizer-label {
+  margin: 12px 0 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #444;
+}
+
+/* Dropdowns */
+.fertilizer-select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+.fertilizer-select:focus {
+  border-color: #2e7d32;
+  box-shadow: 0 0 4px rgba(46, 125, 50, 0.4);
+}
+
+/* Submit button */
+.fertilizer-button {
+  margin-top: 20px;
+  padding: 12px;
+  background: #2e7d32;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.fertilizer-button:hover {
+  background: #256628;
+}
