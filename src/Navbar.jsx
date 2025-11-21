@@ -1,6 +1,3 @@
-
-
-
 import React, { useEffect, useState } from "react";
 import { FaUserCircle, FaPhoneAlt, FaMapMarkerAlt, FaTractor } from "react-icons/fa";
 import "./Navbar.css";
@@ -8,52 +5,52 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [farmer, setFarmer] = useState(null);
-const [slipboy, setSlipboy] = useState(null);
-const [admin, setAdmin] = useState(null);
-
+  const [slipboy, setSlipboy] = useState(null);
+  const [admin, setAdmin] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const role = localStorage.getItem("role");
   const phoneNo = localStorage.getItem("phoneNo");
-const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
 
   // --- FETCH FARMER PROFILE ---
-useEffect(() => {
-  if (role === "FARMER" && phoneNo) {
-    const fetchFarmerProfile = async () => {
-      try {
-        const res = await fetch(`http://localhost:8888/farmerProfile/${phoneNo}`, {
-          headers: { 
-            "Content-Type": "application/json",
-           "Authorization": `Bearer ${token}`
-          },
-        });
-
-        if (!res.ok) throw new Error("Profile not found");
-        const data = await res.json();
-        setFarmer(data);
-      } catch (err) {
-        console.error("Error fetching farmer profile:", err);
-      }
-    };
-    fetchFarmerProfile();
-  }
-  console.log("Token:", localStorage.getItem("token"));
-
-}, [phoneNo, role]);
-
-
-  // --- FETCH SLIPBOY PROFILE ---
   useEffect(() => {
-    if (role === "OFFICER") {
-      const fetchSlipBoy = async () => {
+    if (role === "FARMER" && phoneNo && token) {
+      const fetchFarmerProfile = async () => {
         try {
-          if (!token) {
-            console.error("Token missing. Please login.");
+          const res = await fetch(`http://localhost:8888/farmerProfile/${phoneNo}`, {
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`,
+            },
+          });
+
+          if (res.status === 401) {
+            console.error("Unauthorized. Please login again.");
+            localStorage.clear();
+            window.location.href = "/Login";
             return;
           }
 
+          if (!res.ok) throw new Error("Farmer profile not found");
+
+          const data = await res.json();
+          setFarmer(data);
+        } catch (err) {
+          console.error("Error fetching farmer profile:", err);
+        }
+      };
+
+      fetchFarmerProfile();
+    }
+  }, [phoneNo, role, token]);
+
+  // --- FETCH OFFICER PROFILE ---
+  useEffect(() => {
+    if ((role === "OFFICER" || role === "ROLE_OFFICER") && token) {
+      const fetchSlipBoy = async () => {
+        try {
           const res = await fetch("http://localhost:8888/officerProfile", {
             method: "GET",
             headers: {
@@ -62,14 +59,19 @@ useEffect(() => {
             },
           });
 
-          if (res.status === 403) {
-            console.error("Access denied. Invalid token or insufficient permissions.");
+          if (res.status === 401) {
+            console.error("Unauthorized. Please login again.");
             localStorage.clear();
             window.location.href = "/Login";
             return;
           }
 
-          if (!res.ok) throw new Error("Slip Boy Profile not found");
+          if (res.status === 403) {
+            console.error("Access denied. Invalid token or insufficient permissions.");
+            return;
+          }
+
+          if (!res.ok) throw new Error("Slip Boy profile not found");
 
           const data = await res.json();
           setSlipboy(data);
@@ -92,31 +94,35 @@ useEffect(() => {
           <Link to="/farmerList">My Plots</Link>
           <Link to="/geo">Geo View</Link>
           <Link to="/fieldTask">Field Task</Link>
-           <Link to="/Login">Login</Link>
+          {/* <Link to="/Login">Login</Link> */}
         </>
       );
     }
-    if (role === "OFFICER") {
+
+    if (role === "OFFICER" || role === "ROLE_OFFICER") {
       return (
         <>
-          <Link to="/slipBoyProfile">Slip Boy Profile</Link>
+          <Link to={`/officerProfile/${username}`}>Officer Dashboard</Link>
           <Link to="/generateSlip">Generate Slip</Link>
           <Link to="/viewRequests">Farmer Requests</Link>
           <Link to="/tripSheet">Trip Sheet</Link>
         </>
       );
     }
-    if (role === "ADMIN") {
+
+    if (role === "ADMIN" || role === "ROLE_ADMIN") {
       return (
         <>
-          <Link to="/adminProfile">Admin Dashboard</Link>
+        <Link to={`/adminProfile/${username}`}>Admin Dashboard</Link>
+
           <Link to="/manageUsers">Manage Users</Link>
           <Link to="/reports">Reports</Link>
-           <Link to="/About">About</Link>
-            <Link to="/Login">Login</Link>
+          <Link to="/About">About</Link>
+          {/* <Link to="/Login">Login</Link> */}
         </>
       );
     }
+
     return (
       <>
         <Link to="/">Home</Link>
@@ -128,80 +134,49 @@ useEffect(() => {
 
   // --- SIDEBAR CONTENT ---
   const renderSidebarContent = () => {
+    // FARMER PROFILE
+    if (role === "FARMER" && farmer) {
+      return (
+        <>
+          <h3>{farmer.farmer_f_name} {farmer.farmer_l_name}</h3>
+          <p className="role">Registered Farmer</p>
+          <div className="profile-info">
+            <p><FaPhoneAlt /> {farmer.phoneNo || "N/A"}</p>
+            <p><FaMapMarkerAlt /> {farmer.farmer_village || "N/A"}</p>
+            <p><FaTractor /> {farmer.landArea || "N/A"} acres</p>
+            <p>🏢 {farmer.branchName || "N/A"}</p>
+          </div>
+        </>
+      );
+    }
 
-    //FARMER
-  if (role === "FARMER") {
-  if (!farmer) return <p style={{ color: "red" }}>Profile not available</p>;
+    // OFFICER PROFILE
+    if (role === "OFFICER" || role === "ROLE_OFFICER") {
+      if (!slipboy) return <p style={{ color: "red" }}>Profile not available</p>;
 
-  return (
-    <>
-      <h3>{farmer.farmer_f_name} {farmer.farmer_l_name}</h3>
-      <p className="role">Registered Farmer</p>
-      <div className="profile-info">
-        <p><FaPhoneAlt /> {farmer.phoneNo || "N/A"}</p>
-        <p><FaMapMarkerAlt /> {farmer.farmer_village || "N/A"}</p>
-        <p><FaTractor /> {farmer.landArea || "N/A"} acres</p>
-        <p>🏢 {farmer.branchName || "N/A"}</p>
-      </div>
-    </>
-  );
-}
+      return (
+        <>
+          <h3>{slipboy.username}</h3>
+          <p className="role">{slipboy.role}</p>
+          <div className="profile-info">
+          </div>
+        </>
+      );
+    }
 
+    // ADMIN PROFILE
+    if (role === "ADMIN" || role === "ROLE_ADMIN") {
+      if (!username) return <p style={{ color: "red" }}>Profile not available</p>;
 
+      return (
+        <>
+          <h3>{username}</h3>
+          <p className="role">System Administrator</p>
+        </>
+      );
+    }
 
-
-
-   if (role === "OFFICER") {
-  const username = localStorage.getItem("username");
-
-  if (!username) {
-    return <p style={{ color: "red" }}>Profile not available. Please login or check permissions.</p>;
-  }
-
-  return (
-    <>
-      <h3>{username}</h3>
-      <p className="role">{role}</p>
-      <div className="profile-info">
-        <p><FaPhoneAlt /> N/A</p>
-        <p><FaMapMarkerAlt /> N/A</p>
-        <p>🆔 ID: N/A</p>
-      </div>
-    </>
-  );
-}
-
-
-    // if (role === "ADMIN") {
-    //   return (
-    //     <>
-    //       <h3>ADMIN</h3>
-    //       <p className="role">System Administrator</p>
-    //     </>
-    //   );
-    // }
-
-
-     if (role === "ADMIN") {
-  const username = localStorage.getItem("username");
-
-  if (!username) {
-    return <p style={{ color: "red" }}>Profile not available. Please login or check permissions.</p>;
-  }
-
-  return (
-    <>
-      <h3>{username}</h3>
-      <p className="role">{role}</p>
-      <div className="profile-info">
-        <p><FaPhoneAlt /> N/A</p>
-        <p><FaMapMarkerAlt /> N/A</p>
-        <p>🆔 ID: N/A</p>
-      </div>
-    </>
-  );
-}  
-    return null;
+    return <p>Profile not available</p>;
   };
 
   return (
