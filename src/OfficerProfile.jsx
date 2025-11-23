@@ -6,26 +6,26 @@ import { FaUsersCog, FaUserShield, FaClipboardCheck } from "react-icons/fa";
 
 import "./AdminProfile.css";
 
-const AdminProfile = () => {
+const OfficerProfile = () => {
   return (
     <div className="admin-dashboard-grid">
 
-      {/* <Link to="/GetRequest" className="admin-dashboard-tile">
+      <Link to="/GetRequest" className="admin-dashboard-tile">
         <GiFertilizerBag size={40} />
         <p>Fertilizer Allocation</p>
-      </Link> */}
-
-      <Link to="/VillageCards" className="admin-dashboard-tile">
-        <FaUsersCog size={40} />
-        <p>Manage Farmers</p>
       </Link>
+
+      <Link to="/FarmerCards" className="admin-dashboard-tile">
+             <FaUsersCog size={40} />
+             <p>Manage Farmers</p>
+           </Link>
 
       <Link to="/admin/officers" className="admin-dashboard-tile">
         <FaUserShield size={40} />
         <p>Manage Officers</p>
       </Link>
 
-      <Link to="/PlotsRecords" className="admin-dashboard-tile">
+      <Link to="/FarmerList" className="admin-dashboard-tile">
         <GiPlantRoots size={40} />
         <p>Plot Records</p>
       </Link>
@@ -44,4 +44,4 @@ const AdminProfile = () => {
   );
 };
 
-export default AdminProfile;
+export default OfficerProfile;

@@ -1,12 +1,32 @@
+/* Dashboard Grid */
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 20px;
   padding: 20px;
-  margin-top: 300px;;
+  margin-top: 300px;
+  position: relative; /* for overlay positioning */
 
+  /* Background image */
+  background-image: url('https://img.freepik.com/free-photo/green-background_1150-6956.jpg'); /* replace with your direct image URL */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
+/* Optional overlay for readability */
+.dashboard-grid::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.6); /* white overlay with transparency */
+  z-index: 0;
+}
+
+/* Dashboard Tile */
 .dashboard-tile {
   background: #ffffff;
   border-radius: 14px;
@@ -14,14 +34,16 @@
   text-align: center;
   color: #333;
   text-decoration: none;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   transition: all 0.25s ease-in-out;
   cursor: pointer;
+  position: relative; /* appear above overlay */
+  z-index: 1;
 }
 
 .dashboard-tile:hover {
   transform: translateY(-6px);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
   background: #f4f8ff;
 }
 
@@ -31,12 +53,12 @@
   font-weight: 600;
 }
 
-/* Text color reset */
+/* Text color on hover */
 .dashboard-tile:hover p {
   color: #0a4cff;
 }
 
-/* ICON color */
+/* Icon color */
 .dashboard-tile svg {
   transition: 0.25s;
   color: #444;
@@ -52,11 +74,11 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
-  
+
   .dashboard-tile {
     padding: 15px;
   }
-  
+
   .dashboard-tile p {
     font-size: 14px;
   }

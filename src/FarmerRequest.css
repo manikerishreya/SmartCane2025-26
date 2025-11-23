@@ -1,65 +1,66 @@
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 22px;
-  padding: 20px;
-  margin-top: 120px;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-}
+/* Container */
+.fertilizer-container {
+  max-width: 450px;
 
-.dashboard-tile {
+  margin: 300px auto;
+  padding: 25px;
   background: #ffffff;
-  border-radius: 16px;
-  padding: 24px 18px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Heading */
+.fertilizer-heading {
   text-align: center;
-  text-decoration: none;
-
-  color: #333;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
-  transition: all 0.25s ease-in-out;
-  cursor: pointer;
-}
-
-.dashboard-tile:hover {
-  transform: translateY(-6px) scale(1.03);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.18);
-  background: #f2f7ff;
-}
-
-.dashboard-tile p {
-  margin-top: 12px;
-  font-size: 17px;
+  font-size: 24px;
+  margin-bottom: 25px;
+  color: #1d321e;
   font-weight: 600;
-  letter-spacing: 0.5px;
 }
 
-.dashboard-tile:hover p {
-  color: #0a49ff;
+/* Form layout */
+.fertilizer-form {
+  display: flex;
+  flex-direction: column;
 }
 
-.dashboard-tile svg {
-  transition: 0.25s;
-  color: #4b4b4b;
+/* Labels */
+.fertilizer-label {
+  margin: 12px 0 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #444;
 }
 
-.dashboard-tile:hover svg {
-  color: #0a49ff;
+/* Dropdowns */
+.fertilizer-select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  outline: none;
+  transition: 0.2s ease;
 }
 
-/* Mobile Responsive */
-@media (max-width: 480px) {
-  .dashboard-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-  }
+.fertilizer-select:focus {
+  border-color: #2e7d32;
+  box-shadow: 0 0 4px rgba(46, 125, 50, 0.4);
+}
 
-  .dashboard-tile {
-    padding: 18px 12px;
-  }
+/* Submit button */
+.fertilizer-button {
+  margin-top: 20px;
+  padding: 12px;
+  background: #2e7d32;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
 
-  .dashboard-tile p {
-    font-size: 14px;
-  }
+.fertilizer-button:hover {
+  background: #256628;
 }
