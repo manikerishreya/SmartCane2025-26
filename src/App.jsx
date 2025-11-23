@@ -13,7 +13,11 @@ import FarmerRequest from "./FarmerRequest";
 import PlotsRecords from "./PlotsRecords";
 import About from "./About";
 import FarmerProfile from "./FarmerProfile";
-import OfficerProfile from "./OfficerProfile";   // ✔ FIXED
+import OfficerProfile from "./OfficerProfile";
+import FarmerCards from "./FarmerCards"
+import FarmerDetails from "./FarmerDetails";   // ✔ FIXED
+import VillageCards from "./VillageCards"
+import VillageFarmers from "./VillageFarmers";
 
 function App() {
   return (
@@ -42,6 +46,11 @@ function App() {
         <Route path="/FarmerRequest" element={<FarmerRequest />} />
         <Route path="/PlotsRecords" element={<PlotsRecords />} />
         <Route path="/About" element={<About />} />
+         <Route path="/FarmerCards" element={<FarmerCards />} />
+           <Route path="/farmerDetails/:phoneNo" element={<FarmerDetails />} />
+
+           <Route path="/VillageCards" element={<VillageCards />} />
+<Route path="/village/:villageName" element={<VillageFarmers />} />
 
       </Routes>
     </>

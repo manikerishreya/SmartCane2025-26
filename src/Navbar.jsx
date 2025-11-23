@@ -7,6 +7,7 @@ const Navbar = () => {
   const [farmer, setFarmer] = useState(null);
   const [slipboy, setSlipboy] = useState(null);
   const [admin, setAdmin] = useState(null);
+  const [lab, setLab] = useState(null);  
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const role = localStorage.getItem("role");
@@ -14,7 +15,9 @@ const Navbar = () => {
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
 
-  // --- FETCH FARMER PROFILE ---
+  // =======================
+  // FETCH FARMER PROFILE
+  // =======================
   useEffect(() => {
     if (role === "FARMER" && phoneNo && token) {
       const fetchFarmerProfile = async () => {
@@ -27,13 +30,10 @@ const Navbar = () => {
           });
 
           if (res.status === 401) {
-            console.error("Unauthorized. Please login again.");
             localStorage.clear();
             window.location.href = "/Login";
             return;
           }
-
-          if (!res.ok) throw new Error("Farmer profile not found");
 
           const data = await res.json();
           setFarmer(data);
@@ -46,13 +46,15 @@ const Navbar = () => {
     }
   }, [phoneNo, role, token]);
 
-  // --- FETCH OFFICER PROFILE ---
+
+  // =======================
+  // FETCH OFFICER PROFILE
+  // =======================
   useEffect(() => {
     if ((role === "OFFICER" || role === "ROLE_OFFICER") && token) {
       const fetchSlipBoy = async () => {
         try {
           const res = await fetch("http://localhost:8888/officerProfile", {
-            method: "GET",
             headers: {
               "Authorization": `Bearer ${token}`,
               "Content-Type": "application/json",
@@ -60,18 +62,10 @@ const Navbar = () => {
           });
 
           if (res.status === 401) {
-            console.error("Unauthorized. Please login again.");
             localStorage.clear();
             window.location.href = "/Login";
             return;
           }
-
-          if (res.status === 403) {
-            console.error("Access denied. Invalid token or insufficient permissions.");
-            return;
-          }
-
-          if (!res.ok) throw new Error("Slip Boy profile not found");
 
           const data = await res.json();
           setSlipboy(data);
@@ -84,7 +78,43 @@ const Navbar = () => {
     }
   }, [role, token]);
 
-  // --- NAVBAR LINKS ---
+
+  // =======================
+  // FETCH LAB PROFILE
+  // =======================
+  useEffect(() => {
+    if ((role === "LAB" || role === "ROLE_LAB") && token) {
+      const fetchLabProfile = async () => {
+        try {
+          const res = await fetch(`http://localhost:8888/lab/labProfile/${phoneNo}`, {
+  headers: {
+    "Authorization": `Bearer ${token}`,
+    "Content-Type": "application/json",
+  },
+});
+
+
+          if (res.status === 401) {
+            localStorage.clear();
+            window.location.href = "/Login";
+            return;
+          }
+
+          const data = await res.json();
+          setLab(data); 
+        } catch (err) {
+          console.error("Error fetching lab profile:", err);
+        }
+      };
+
+      fetchLabProfile();
+    }
+  }, [phoneNo,role,token]);
+
+
+  // =======================
+  // NAVBAR LINKS BASED ON ROLE
+  // =======================
   const renderLinks = () => {
     if (role === "FARMER") {
       return (
@@ -94,7 +124,6 @@ const Navbar = () => {
           <Link to="/farmerList">My Plots</Link>
           <Link to="/geo">Geo View</Link>
           <Link to="/fieldTask">Field Task</Link>
-          {/* <Link to="/Login">Login</Link> */}
         </>
       );
     }
@@ -113,12 +142,20 @@ const Navbar = () => {
     if (role === "ADMIN" || role === "ROLE_ADMIN") {
       return (
         <>
-        <Link to={`/adminProfile/${username}`}>Admin Dashboard</Link>
-
+          <Link to={`/adminProfile/${username}`}>Admin Dashboard</Link>
           <Link to="/manageUsers">Manage Users</Link>
           <Link to="/reports">Reports</Link>
           <Link to="/About">About</Link>
-          {/* <Link to="/Login">Login</Link> */}
+        </>
+      );
+    }
+
+    if (role === "LAB" || role === "ROLE_LAB") {
+      return (
+        <>
+          <Link to={`/labProfile/${username}`}>Lab Dashboard</Link>
+          <Link to="/labRequests">Online Requests</Link>
+          <Link to="/reports">Reports</Link>
         </>
       );
     }
@@ -132,42 +169,57 @@ const Navbar = () => {
     );
   };
 
-  // --- SIDEBAR CONTENT ---
+
+  // =======================
+  // SIDEBAR CONTENT
+  // =======================
   const renderSidebarContent = () => {
-    // FARMER PROFILE
+    // FARMER
     if (role === "FARMER" && farmer) {
       return (
         <>
           <h3>{farmer.farmer_f_name} {farmer.farmer_l_name}</h3>
           <p className="role">Registered Farmer</p>
+
           <div className="profile-info">
-            <p><FaPhoneAlt /> {farmer.phoneNo || "N/A"}</p>
-            <p><FaMapMarkerAlt /> {farmer.farmer_village || "N/A"}</p>
-            <p><FaTractor /> {farmer.landArea || "N/A"} acres</p>
-            <p>🏢 {farmer.branchName || "N/A"}</p>
+            <p><FaPhoneAlt /> {farmer.phoneNo}</p>
+            <p><FaMapMarkerAlt /> {farmer.farmer_village}</p>
+            <p><FaTractor /> {farmer.landArea} acres</p>
+            <p>🏢 {farmer.branchName}</p>
           </div>
         </>
       );
     }
 
-    // OFFICER PROFILE
-    if (role === "OFFICER" || role === "ROLE_OFFICER") {
-      if (!slipboy) return <p style={{ color: "red" }}>Profile not available</p>;
+    // LAB
+   if ((role === "LAB" || role === "ROLE_LAB") && lab) {
+  return (
+    <>
+      <h3>{lab.labAssistantName || "Lab Technician"}</h3>
+      <p className="role">Lab Staff</p>
 
+      <div className="profile-info">
+        <p><FaPhoneAlt /> {lab.contactNumber || "N/A"}</p>
+        <p><FaMapMarkerAlt /> {lab.labName || "N/A"}</p>
+        <p>🔬 Lab ID: {lab.labId || "N/A"}</p>
+      </div>
+    </>
+  );
+}
+
+
+    // OFFICER
+    if (role === "OFFICER" || role === "ROLE_OFFICER") {
       return (
         <>
-          <h3>{slipboy.username}</h3>
-          <p className="role">{slipboy.role}</p>
-          <div className="profile-info">
-          </div>
+          <h3>{slipboy?.username}</h3>
+          <p className="role">{slipboy?.role}</p>
         </>
       );
     }
 
-    // ADMIN PROFILE
+    // ADMIN
     if (role === "ADMIN" || role === "ROLE_ADMIN") {
-      if (!username) return <p style={{ color: "red" }}>Profile not available</p>;
-
       return (
         <>
           <h3>{username}</h3>
@@ -179,9 +231,9 @@ const Navbar = () => {
     return <p>Profile not available</p>;
   };
 
+
   return (
     <>
-      {/* TOP NAVBAR */}
       <nav className="navbar">
         <div className="navbar-logo">
           <h2>SmartCane</h2>
@@ -191,7 +243,6 @@ const Navbar = () => {
           {renderLinks()}
         </div>
 
-        {/* PROFILE ICON */}
         {role && (
           <div className="profile-icon" onClick={() => setSidebarOpen(true)}>
             <FaUserCircle size={35} />
@@ -199,7 +250,6 @@ const Navbar = () => {
         )}
       </nav>
 
-      {/* SIDEBAR */}
       <div className={`profile-sidebar ${sidebarOpen ? "open" : ""}`}>
         <button className="close-btn" onClick={() => setSidebarOpen(false)}>
           ✖

@@ -15,7 +15,7 @@ const AdminProfile = () => {
         <p>Fertilizer Allocation</p>
       </Link> */}
 
-      <Link to="/admin/farmers" className="admin-dashboard-tile">
+      <Link to="/VillageCards" className="admin-dashboard-tile">
         <FaUsersCog size={40} />
         <p>Manage Farmers</p>
       </Link>
